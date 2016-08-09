@@ -135,5 +135,5 @@ def notereader(dataframe):
     output_dict ={}
     for i in dataframe.index:           
         output_dict[i] = dataframe.Notes[i]
-        print ("INDEX", i,"\n", dfjunk.Notes[i],"\n")
+        print ("INDEX", i,"\n", dataframe.Notes[i],"\n")
     return output_dict
