@@ -118,7 +118,16 @@ df1 = df1.apply(lambda x: pd.to_numeric(x,errors="ignore"))
 #convert 'trmt_date' column to datetime type
 df1['trmt_date'] = df1['trmt_date'].apply(lambda x: pd.to_datetime(x,format='%m/%d/%Y'))
 
+#adjust ages >120yo
+def age_filter(age):
+    if age > 120:
+        return 1
+    else:
+        return age
 
+df1['age'] = df1['age'].astype(int).map(age_filter)
+
+#extra functions
 def textfind(dataframe, field, string):
     """ Takes dataframe, field (column in the dataframe), and a string to search
     Allow for use of regular expressions.
