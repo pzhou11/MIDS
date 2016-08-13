@@ -1,6 +1,7 @@
 import csv 
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 %matplotlib inline  
 
 with open('Data/2015.tsv','r') as tsv:
@@ -118,13 +119,15 @@ df1 = df1.apply(lambda x: pd.to_numeric(x,errors="ignore"))
 #convert 'trmt_date' column to datetime type
 df1['trmt_date'] = df1['trmt_date'].apply(lambda x: pd.to_datetime(x,format='%m/%d/%Y'))
 
+#remove quotation marks from product1_desrip field
+df1['product1_descrip'] = df1['product1_descrip'].apply(lambda x: re.sub('"','',str(x)))
 
 def textfind(dataframe, field, string):
     """ Takes dataframe, field (column in the dataframe), and a string to search
     Allow for use of regular expressions.
     Returns a dataframe of the records where the string is found"""
     import re
-    a = [df1.loc[i] for i in range(1,len(dataframe)) \
+    a = [dataframe.loc[i] for i in dataframe.index \
          if re.search(string, dataframe[field][i])]
     return pd.DataFrame(a)
     
@@ -137,3 +140,5 @@ def notereader(dataframe):
         output_dict[i] = dataframe.Notes[i]
         print ("INDEX", i,"\n", dataframe.Notes[i],"\n")
     return output_dict
+
+pd.options.display.max_colwidth = 1000
